@@ -18,8 +18,10 @@ namespace FinAnalytics_Nomina
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            // CORS: origen del cliente (Live Server). Unico lugar a tocar si cambia el puerto/origen.
-            var cors = new EnableCorsAttribute("http://127.0.0.1:5500", "*", "*");
+            // CORS: origen(es) del cliente (Live Server). Unico lugar a tocar si cambia el
+            // puerto/origen. 5501 se agrego para probar en este entorno porque el 5500
+            // (el default documentado en PLAN_FRONTEND.md) ya estaba ocupado por VS Code.
+            var cors = new EnableCorsAttribute("http://127.0.0.1:5500,http://127.0.0.1:5501", "*", "*");
             config.EnableCors(cors);
 
             // La API responde solo JSON.
@@ -31,7 +33,6 @@ namespace FinAnalytics_Nomina
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver =
                 new CamelCasePropertyNamesContractResolver();
 
-            // Responde 200 a los OPTIONS de preflight antes de que lleguen al pipeline normal.
             config.MessageHandlers.Add(new PreflightRequestsHandler());
         }
     }
