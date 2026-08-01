@@ -1,0 +1,24 @@
+# Secretos - nunca se versiona
+FinAnalytics-Nomina/Web.config
+
+# Indicaciones de IA / guias de estudio - uso local, no se versionan
+PLAN_BACKEND.md
+PLAN_FRONTEND.md
+ESTUDIO_BACKEND.md
+ESTUDIO_FRONTEND.md
+
+# Visual Studio / MSBuild
+.vs/
+**/bin/
+**/obj/
+*.user
+*.suo
+
+# NuGet
+packages/
+*.nupkg
+
+# SQL Server
+*.mdf
+*.ldf
+*.ndf
