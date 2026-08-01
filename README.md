@@ -1,19 +1,20 @@
-# FinAnalytics OS · Módulo de Nómina y Seguridad
+# FinAnalytics OS · Backend (Nómina y Seguridad)
 
 Producto 03 · Desarrollo Web Integral · UTP · Entrega individual
 
-Sistema de nómina con backend en ASP.NET Web API 2 (.NET Framework 4.7.2) y frontend web en JavaScript vanilla. Cuatro roles (ADMIN, RH, FINANZAS, EMPLEADO), autenticación con JWT, autorización por roles, y un motor de cálculo de nómina que integra una API externa de tipo de cambio para contratistas facturados en USD.
+Backend en ASP.NET Web API 2 (.NET Framework 4.7.2) del sistema de nómina FinAnalytics OS. Cuatro roles (ADMIN, RH, FINANZAS, EMPLEADO), autenticación con JWT, autorización por roles, y un motor de cálculo de nómina que integra una API externa de tipo de cambio para contratistas facturados en USD.
 
-Este README cubre instalación y ejecución. Para el detalle de arquitectura y decisiones de diseño ver `PLAN_BACKEND.md` y `PLAN_FRONTEND.md`; para la explicación de cada archivo pensada para la evaluación oral, ver `ESTUDIO_BACKEND.md` y `ESTUDIO_FRONTEND.md`.
+El cliente web vive en un repositorio aparte, **`FinAnalytics-Nomina-Frontend`** (carpeta hermana de esta).
+
+Este README cubre instalación y ejecución del backend. Para el detalle de arquitectura y decisiones de diseño ver `PLAN_BACKEND.md`; para la explicación de cada archivo pensada para la evaluación oral, ver `ESTUDIO_BACKEND.md`.
 
 ---
 
 ## Estado del proyecto
 
-- **Backend:** Fases A–D completas (cimientos, seguridad, CRUDs, motor de nómina), con una excepción deliberada: **BE-30 sigue pendiente** — `ReciboDAO.GuardarRecibos` inserta sin `SqlTransaction`. Es un checkpoint del plan, aún sin aprobar. Fase E (evidencia, Swagger, dashboard) pendiente — ver `PLAN_BACKEND.md` §8.
-- **Frontend:** no iniciado. `frontend/` todavía no existe; toda la Fase A–E de `PLAN_FRONTEND.md` sigue en ⬜.
+Fases A–D completas (cimientos, seguridad, CRUDs, motor de nómina), con una excepción deliberada: **BE-30 sigue pendiente** — `ReciboDAO.GuardarRecibos` inserta sin `SqlTransaction`. Es un checkpoint del plan, aún sin aprobar. Fase E (evidencia, Swagger, dashboard) pendiente — ver `PLAN_BACKEND.md` §8.
 
-Por eso, hasta que exista el frontend, la API se prueba con Thunder Client o Postman.
+Hasta que el frontend cubra el flujo completo, la API se prueba con Thunder Client o Postman.
 
 ---
 
@@ -43,11 +44,7 @@ Por eso, hasta que exista el frontend, la API se prueba con Thunder Client o Pos
    ```
    https://localhost:44334/api
    ```
-5. **Aceptar el certificado HTTPS de localhost** la primera vez que se abre en el navegador. Si no se acepta, las peticiones desde cualquier cliente fallan en silencio (ver `PLAN_BACKEND.md` §11, gotcha 4).
-
-### 3. Frontend
-
-Pendiente de implementación (ver `PLAN_FRONTEND.md`). Cuando exista, se sirve con la extensión Live Server de VS Code en `http://127.0.0.1:5500` y apunta a la API mediante la constante `API_URL` en `frontend/js/app.js`.
+5. **Aceptar el certificado HTTPS de localhost** la primera vez que se abre en el navegador. Si no se acepta, las peticiones desde cualquier cliente (incluido el frontend) fallan en silencio (ver `PLAN_BACKEND.md` §11, gotcha 4).
 
 ---
 
@@ -64,7 +61,7 @@ Con Thunder Client o Postman:
    Authorization: Bearer <token>
    ```
 
-Así se probó BE-17 (login): con Thunder Client y no desde el navegador, porque sin frontend no hay quien resuelva CORS/CSP del lado cliente.
+Así se probó BE-17 (login): con Thunder Client y no desde el navegador, porque en ese punto todavía no existía el frontend para resolver CORS/CSP del lado cliente.
 
 ---
 
@@ -94,9 +91,14 @@ Códigos: `200` OK · `201` creado · `400` validación · `401` sin token o inv
 
 ---
 
+## CORS
+
+El origen permitido para el frontend se configura en `App_Start/WebApiConfig.cs` (`EnableCorsAttribute`). Si el frontend corre en un puerto distinto a `http://127.0.0.1:5500` (por ejemplo, otro puerto de Live Server), hay que actualizar ese origen aquí.
+
+---
+
 ## Pendientes conocidos
 
 - **BE-30** (checkpoint, sin aprobar): envolver `ReciboDAO.GuardarRecibos` en una `SqlTransaction`. Sin ella, si el cálculo falla a la mitad, el periodo puede quedar con recibos parciales hasta el próximo recálculo — no corrompe datos, pero no es atómico.
 - **BE-31:** capturas de evidencia (200 vs 403, 400 de validación, inyección SQL fallida, fallback de tipo de cambio) para el PDF de entrega.
 - **BE-33 / BE-34** (checkpoints, sin aprobar): Swagger y `GET /api/dashboard/resumen` para Finanzas.
-- **Frontend completo** (FE-01 a FE-29 de `PLAN_FRONTEND.md`).
