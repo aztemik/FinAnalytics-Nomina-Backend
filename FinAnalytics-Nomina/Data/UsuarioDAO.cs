@@ -145,10 +145,13 @@ namespace FinAnalytics_Nomina.Data
             }
         }
 
-        public static void Eliminar(int id)
+        // Baja logica: el DELETE del endpoint desactiva, nunca borra el registro.
+        // Un usuario puede estar referenciado por empleados.usuario_id o por
+        // periodos_nomina.creado_por/aprobado_por; borrarlo de verdad rompería ese historial.
+        public static void Desactivar(int id)
         {
             using (var conexion = ConexionBD.Obtener())
-            using (var cmd = new SqlCommand("DELETE FROM usuarios WHERE id = @id", conexion))
+            using (var cmd = new SqlCommand("UPDATE usuarios SET activo = 0 WHERE id = @id", conexion))
             {
                 cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
                 conexion.Open();

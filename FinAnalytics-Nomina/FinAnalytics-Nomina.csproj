@@ -187,6 +187,12 @@
     <Compile Include="Data\UsuarioDAO.cs" />
     <Compile Include="Data\EmpleadoDAO.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\UsuariosController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\ParametrosController.cs" />
+    <Compile Include="Controllers\EmpleadosController.cs" />
+    <Compile Include="Data\RolDAO.cs" />
+    <Compile Include="Data\ParametroDAO.cs" />
     <Compile Include="Models\Rol.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\ParametroNomina.cs" />
