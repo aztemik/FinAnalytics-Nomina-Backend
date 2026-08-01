@@ -50,6 +50,24 @@ namespace FinAnalytics_Nomina.Data
             }
         }
 
+        // La vinculacion empleado-usuario es 1 a 1: el esquema no lo fuerza con UNIQUE
+        // (usuario_id es nullable y se agrego sin esa restriccion), asi que la regla
+        // vive aqui. Sin esto, dos empleados podrian compartir el mismo usuario_id y
+        // ObtenerIdPorUsuarioId (usado por el login para el claim empleadoId) devolveria
+        // uno de los dos de forma arbitraria.
+        public static bool UsuarioYaVinculado(int usuarioId, int? idExcluir = null)
+        {
+            using (var conexion = ConexionBD.Obtener())
+            using (var cmd = new SqlCommand(
+                "SELECT COUNT(1) FROM empleados WHERE usuario_id = @usuarioId AND (@idExcluir IS NULL OR id <> @idExcluir)", conexion))
+            {
+                cmd.Parameters.Add("@usuarioId", SqlDbType.Int).Value = usuarioId;
+                cmd.Parameters.Add("@idExcluir", SqlDbType.Int).Value = (object)idExcluir ?? DBNull.Value;
+                conexion.Open();
+                return (int)cmd.ExecuteScalar() > 0;
+            }
+        }
+
         public static List<EmpleadoDTO> ObtenerTodos()
         {
             var lista = new List<EmpleadoDTO>();

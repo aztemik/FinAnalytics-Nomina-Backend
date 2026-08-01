@@ -120,6 +120,11 @@ namespace FinAnalytics_Nomina.Controllers
                 errores.Add("El RFC ya esta registrado");
             }
 
+            if (request.UsuarioId.HasValue && EmpleadoDAO.UsuarioYaVinculado(request.UsuarioId.Value, idExcluir))
+            {
+                errores.Add("Esa cuenta de portal ya esta vinculada a otro empleado");
+            }
+
             return errores;
         }
 
