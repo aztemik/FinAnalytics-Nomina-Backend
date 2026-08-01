@@ -39,6 +39,16 @@ namespace FinAnalytics_Nomina.Controllers
             if (rol == "EMPLEADO")
             {
                 empleadoId = EmpleadoDAO.ObtenerIdPorUsuarioId(usuario.Id);
+
+                // Sin este vinculo el token saldria sin el claim empleadoId, y cualquier
+                // endpoint que dependa de el (ej. /recibos/mis-recibos) fallaria despues.
+                // Mejor cortar aqui, con un mensaje claro, que dejar entrar con una sesion
+                // a medias.
+                if (empleadoId == null)
+                {
+                    return Content(HttpStatusCode.Unauthorized, RespuestaApi.Falla(
+                        "Tu cuenta aun no esta vinculada a un registro de empleado. Contacta a Recursos Humanos."));
+                }
             }
 
             var token = JwtHelper.GenerarToken(usuario.Id, usuario.Username, rol, empleadoId);
