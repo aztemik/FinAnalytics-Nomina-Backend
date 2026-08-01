@@ -60,7 +60,13 @@ namespace FinAnalytics_Nomina.Security
 
             try
             {
-                return new JwtSecurityTokenHandler().ValidateToken(token, parametros, out _);
+                // Por defecto, JwtSecurityTokenHandler remapea claims cortos conocidos
+                // ("role", "sub") a URIs largas de .NET (ClaimTypes.Role, etc.) al validar.
+                // AutorizarAttribute busca el claim tal cual viene en el token ("role"),
+                // asi que sin esto FindFirst("role") siempre da null y todo termina en 403,
+                // sin importar el rol real del usuario.
+                var handler = new JwtSecurityTokenHandler { MapInboundClaims = false };
+                return handler.ValidateToken(token, parametros, out _);
             }
             catch
             {
