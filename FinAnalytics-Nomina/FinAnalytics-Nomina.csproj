@@ -191,8 +191,15 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\ParametrosController.cs" />
     <Compile Include="Controllers\EmpleadosController.cs" />
+    <Compile Include="Controllers\TipoCambioController.cs" />
+    <Compile Include="Controllers\PeriodosController.cs" />
+    <Compile Include="Controllers\RecibosController.cs" />
     <Compile Include="Data\RolDAO.cs" />
     <Compile Include="Data\ParametroDAO.cs" />
+    <Compile Include="Data\PeriodoDAO.cs" />
+    <Compile Include="Data\ReciboDAO.cs" />
+    <Compile Include="Services\TipoCambioService.cs" />
+    <Compile Include="Services\CalculadoraNomina.cs" />
     <Compile Include="Models\Rol.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\ParametroNomina.cs" />
