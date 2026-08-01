@@ -11,11 +11,15 @@ using FinAnalytics_Nomina.Security;
 namespace FinAnalytics_Nomina.Controllers
 {
     [RoutePrefix("api/usuarios")]
-    [Autorizar(Roles = "ADMIN")]
     public class UsuariosController : ApiController
     {
+        // RH tambien puede listar usuarios: los necesita para vincular un empleado
+        // con su cuenta de portal (rol EMPLEADO) en empleados.html. El resto de
+        // operaciones sobre usuarios (alta, edicion, baja, y el detalle por id)
+        // siguen exclusivas de ADMIN.
         [HttpGet]
         [Route("")]
+        [Autorizar(Roles = "ADMIN,RH")]
         public IHttpActionResult ObtenerTodos()
         {
             return Ok(RespuestaApi.Ok(UsuarioDAO.ObtenerTodos()));
@@ -23,6 +27,7 @@ namespace FinAnalytics_Nomina.Controllers
 
         [HttpGet]
         [Route("{id:int}")]
+        [Autorizar(Roles = "ADMIN")]
         public IHttpActionResult ObtenerPorId(int id)
         {
             var usuario = UsuarioDAO.ObtenerPorId(id);
@@ -37,6 +42,7 @@ namespace FinAnalytics_Nomina.Controllers
 
         [HttpPost]
         [Route("")]
+        [Autorizar(Roles = "ADMIN")]
         public IHttpActionResult Crear(UsuarioCrearRequest request)
         {
             if (!ModelState.IsValid)
@@ -66,6 +72,7 @@ namespace FinAnalytics_Nomina.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
+        [Autorizar(Roles = "ADMIN")]
         public IHttpActionResult Actualizar(int id, UsuarioActualizarRequest request)
         {
             if (!ModelState.IsValid)
@@ -96,6 +103,7 @@ namespace FinAnalytics_Nomina.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
+        [Autorizar(Roles = "ADMIN")]
         public IHttpActionResult Eliminar(int id)
         {
             if (UsuarioDAO.ObtenerPorId(id) == null)
