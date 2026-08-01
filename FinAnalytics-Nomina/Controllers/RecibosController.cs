@@ -24,9 +24,18 @@ namespace FinAnalytics_Nomina.Controllers
         public IHttpActionResult MisRecibos()
         {
             // El empleado no manda ningun id: se extrae del claim firmado, nunca de la peticion.
-            int empleadoId = int.Parse(((ClaimsPrincipal)User).FindFirst("empleadoId").Value);
+            // AuthController ya deberia impedir que un EMPLEADO sin vinculo reciba un token sin
+            // este claim, pero un token viejo emitido antes de ese arreglo podria no tenerlo:
+            // se maneja con un error claro en vez de tronar con NullReferenceException.
+            var empleadoIdClaim = ((ClaimsPrincipal)User).FindFirst("empleadoId")?.Value;
 
-            return Ok(RespuestaApi.Ok(ReciboDAO.ObtenerPorEmpleado(empleadoId)));
+            if (empleadoIdClaim == null)
+            {
+                return Content(HttpStatusCode.Forbidden, RespuestaApi.Falla(
+                    "Tu cuenta de portal aun no esta vinculada a un empleado. Vuelve a iniciar sesion o contacta a Recursos Humanos."));
+            }
+
+            return Ok(RespuestaApi.Ok(ReciboDAO.ObtenerPorEmpleado(int.Parse(empleadoIdClaim))));
         }
 
         [HttpGet]
