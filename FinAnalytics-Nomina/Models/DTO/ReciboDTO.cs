@@ -9,6 +9,7 @@ namespace FinAnalytics_Nomina.Models.DTO
         public int EmpleadoId { get; set; }
         public string NumeroEmpleado { get; set; }
         public string NombreEmpleado { get; set; }
+        public string Moneda { get; set; } // MXN | USD, del empleado dueño del recibo
         public decimal SueldoBase { get; set; }
         public decimal TotalPercepciones { get; set; }
         public decimal TotalDeducciones { get; set; }

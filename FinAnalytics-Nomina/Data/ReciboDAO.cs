@@ -179,7 +179,7 @@ namespace FinAnalytics_Nomina.Data
         // Detalle no se incluye aqui: solo ObtenerPorId lo necesita.
         private static string ConsultaBase()
         {
-            return "SELECT r.id, r.periodo_id, r.empleado_id, e.numero_empleado, e.nombre + ' ' + e.apellidos AS nombre_completo, " +
+            return "SELECT r.id, r.periodo_id, r.empleado_id, e.numero_empleado, e.nombre + ' ' + e.apellidos AS nombre_completo, e.moneda, " +
                    "r.sueldo_base, r.total_percepciones, r.total_deducciones, r.neto_pagar, r.carga_patronal " +
                    "FROM recibos_nomina r JOIN empleados e ON e.id = r.empleado_id ";
         }
@@ -193,6 +193,7 @@ namespace FinAnalytics_Nomina.Data
                 EmpleadoId = (int)reader["empleado_id"],
                 NumeroEmpleado = (string)reader["numero_empleado"],
                 NombreEmpleado = (string)reader["nombre_completo"],
+                Moneda = (string)reader["moneda"],
                 SueldoBase = (decimal)reader["sueldo_base"],
                 TotalPercepciones = (decimal)reader["total_percepciones"],
                 TotalDeducciones = (decimal)reader["total_deducciones"],
