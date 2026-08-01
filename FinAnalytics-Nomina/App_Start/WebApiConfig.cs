@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Cors;
 using FinAnalytics_Nomina.Handlers;
+using Newtonsoft.Json.Serialization;
 
 namespace FinAnalytics_Nomina
 {
@@ -23,6 +24,12 @@ namespace FinAnalytics_Nomina
 
             // La API responde solo JSON.
             config.Formatters.Remove(config.Formatters.XmlFormatter);
+
+            // Las propiedades C# (PascalCase) se serializan en camelCase, que es el
+            // formato que documenta el contrato de la API (PLAN_BACKEND.md §6) y el
+            // que espera el frontend (exito, mensaje, datos, errores).
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver =
+                new CamelCasePropertyNamesContractResolver();
 
             // Responde 200 a los OPTIONS de preflight antes de que lleguen al pipeline normal.
             config.MessageHandlers.Add(new PreflightRequestsHandler());

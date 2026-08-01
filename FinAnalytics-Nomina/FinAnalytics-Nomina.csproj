@@ -180,8 +180,33 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\PasswordHelper.cs" />
+    <Compile Include="Security\JwtHelper.cs" />
+    <Compile Include="Security\AutorizarAttribute.cs" />
     <Compile Include="Handlers\PreflightRequestsHandler.cs" />
     <Compile Include="Data\ConexionBD.cs" />
+    <Compile Include="Data\UsuarioDAO.cs" />
+    <Compile Include="Data\EmpleadoDAO.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Models\Rol.cs" />
+    <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\ParametroNomina.cs" />
+    <Compile Include="Models\Empleado.cs" />
+    <Compile Include="Models\PeriodoNomina.cs" />
+    <Compile Include="Models\ReciboNomina.cs" />
+    <Compile Include="Models\DetalleRecibo.cs" />
+    <Compile Include="Models\DTO\RespuestaApi.cs" />
+    <Compile Include="Models\DTO\LoginRequest.cs" />
+    <Compile Include="Models\DTO\LoginResponse.cs" />
+    <Compile Include="Models\DTO\UsuarioDTO.cs" />
+    <Compile Include="Models\DTO\UsuarioCrearRequest.cs" />
+    <Compile Include="Models\DTO\UsuarioActualizarRequest.cs" />
+    <Compile Include="Models\DTO\EmpleadoDTO.cs" />
+    <Compile Include="Models\DTO\EmpleadoRequest.cs" />
+    <Compile Include="Models\DTO\ParametroActualizarRequest.cs" />
+    <Compile Include="Models\DTO\PeriodoRequest.cs" />
+    <Compile Include="Models\DTO\PeriodoDTO.cs" />
+    <Compile Include="Models\DTO\DetalleReciboDTO.cs" />
+    <Compile Include="Models\DTO\ReciboDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
